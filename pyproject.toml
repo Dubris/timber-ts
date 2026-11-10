@@ -1,0 +1,106 @@
+[project]
+name = "timber-ts"
+version = "0.1.0"
+description = "Self-supervised representation learning for multichannel time series (TIMBER), as Hugging Face models"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "The TIMBER authors" }]
+requires-python = ">=3.12"
+keywords = ["time series", "self-supervised learning", "representation learning", "perceiver", "transformers", "fmri"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = [
+    "huggingface-hub>=0.34",
+    "lightning>=2.6",
+    "numpy>=2.3.3",
+    "safetensors>=0.6",
+    "torch>=2.15",
+    "torchmetrics>=1.8",
+    "transformers>=4.51.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/Dubris/timber-ts"
+Documentation = "https://dubris.github.io/timber-ts/"
+Repository = "https://github.com/Dubris/timber-ts"
+Issues = "https://github.com/Dubris/timber-ts/issues"
+Changelog = "https://github.com/Dubris/timber-ts/blob/main/CHANGELOG.md"
+Paper = "https://hal.science/hal-05632181"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+    "pre-commit>=4.0",
+    "pyright>=1.1.400",
+    "pytest>=8.4.2",
+    "ruff>=0.13.0",
+]
+
+docs = [
+    "mkdocs-material>=9.6",
+    "mkdocstrings[python]>=0.30",
+]
+
+processing = [
+    "brainspace>=0.1.10",
+    "matplotlib>=3.10.6",
+    "nibabel>=5.3.2",
+    "nilearn>=0.12.1",
+    "scikit-learn==1.6.0",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.6",
+    "xarray>=2025.12.0",
+]
+
+experiment = [
+    # Experiments (fMRI application and paper experiments) on the current transformers
+    "einops>=0.8.1",
+    "hcp-utils>=0.1.0",
+    "pandas>=2.3.2",
+    "tqdm>=4.67",
+    "hydra-core>=1.3.2",
+    "mlflow>=3.4.0",
+    "omegaconf>=2.3.0",
+    "submitit>=1.5.3",
+    "transformers>=5",
+]
+
+[build-system]
+requires = ["uv_build>=0.9,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "timber"
+module-root = "src"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["*.ipynb", "experiments/legacy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "PIE", "RET", "PT", "RUF", "PLC0415"]
+ignore = [
+    "PT018",  # composite assertions are fine in tests
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["timber", "experiments"]
+
+[tool.pyright]
+include = ["src/timber"]
+typeCheckingMode = "basic"
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
+# transformers exports its public API lazily, which pyright reports as private imports
+reportPrivateImportUsage = false

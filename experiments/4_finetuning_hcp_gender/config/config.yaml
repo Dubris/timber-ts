@@ -1,0 +1,56 @@
+defaults:
+- trainer: config_trainer
+- datamodule: config_datamodule_split_1
+- _self_
+name_experiment: 4_finetuning_hcp_gender
+name_run: split_1
+description_experiment: Finetuning the pretrained model on the HCP dataset to predict
+  gender.
+seed: 42
+pretrained: ${path:mlruns}/703939167202936301/0ece2b5a2cdb4f738162a9c09dd12131/checkpoints/epoch=29-step=174000.ckpt
+resume_from: null
+discard: null
+freeze:
+- timber.tokenizer
+- timber.contextualizer
+- timber.encoder.blocks.0
+- timber.encoder.latents
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+model:
+  head:
+    task: classification
+    num_outputs: 2
+    pooling: mean
+    fusion_stage: late
+    projection_dim: null
+    pooling_input_dropout: 0.0
+    num_hidden_layers: 0
+    widening_factor: 1.0
+    dropout: 0.3
+    use_input_norm: false
+    label_smoothing: 0.05
+    loss_weight: 1.0
+    latent_block: null
+  decoders: []
+  patch_mask_ratio: 0.0
+  encoder:
+    use_cls_token: false
+training:
+  learning_rate: 2.0e-05
+  weight_decay: 0.01
+  head_weight_decay: 0.01
+  max_epochs: 20
+callbacks:
+  checkpoint:
+    monitor: val_auc
+    mode: max
+    save_top_k: 1
+    save_last: true
+  early_stopping:
+    monitor: val_auc
+    mode: max
+    patience: 3
+  periodic_checkpoint_every_n_epochs: null

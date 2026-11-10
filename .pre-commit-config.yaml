@@ -1,0 +1,20 @@
+# Installed once with `uv run pre-commit install`. The Python checks are the ones of scripts/check.sh,
+# restricted to the staged files: the hook and the full check cannot disagree.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+        exclude: ^experiments/data/.*\.npy$  # the spectral embeddings and parcellations are versioned on purpose
+  - repo: local
+    hooks:
+      - id: checks-staged
+        name: ruff and pyright (scripts/check.sh --staged)
+        entry: scripts/check.sh --staged
+        language: system
+        pass_filenames: false
+        types: [python]

@@ -1,0 +1,43 @@
+# Documentation only: builds the MkDocs site strictly and publishes it to GitHub Pages.
+# The rest of the project is checked locally (scripts/check.sh), there is no test workflow.
+name: docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "src/timber/**"
+      - "experiments/README.md"
+      - "CHANGELOG.md"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      UV_LOCKED: "1"  # fail on a stale uv.lock instead of updating it
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Strict documentation build (same as the local check)
+        run: scripts/check.sh --docs
+
+      - name: Publish to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: uv run --group docs mkdocs gh-deploy --force --strict

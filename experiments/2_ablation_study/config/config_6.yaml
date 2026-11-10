@@ -1,0 +1,32 @@
+defaults:
+- model: config_model_forecasting
+- trainer: config_trainer
+- datamodule: config_datamodule_size_200
+- _self_
+name_experiment: 2_ablation_study
+name_run: 6_one_encoder_block
+seed: 42
+pretrained: null
+resume_from: null
+discard: null
+freeze: null
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+channel_embedding_init: ${path:assets}/spectral_embeddings_64.npy
+training:
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  max_epochs: 30
+callbacks:
+  checkpoint:
+    monitor: val/loss
+    mode: min
+    save_top_k: 1
+    save_last: false
+  early_stopping: null
+  periodic_checkpoint_every_n_epochs: 5
+model:
+  encoder:
+    num_blocks: 1

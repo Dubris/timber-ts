@@ -1,0 +1,22 @@
+# Machine-specific paths of the fMRI experiments.
+# Copy this file to experiments/paths.yaml (git-ignored) and edit it for each machine,
+# or point the environment variable TIMBER_PATHS to another file.
+# Read by experiments.timber_fmri.paths: PATHS.<name> in Python, ${path:<name>} in the YAML configs.
+# Relative paths are relative to the repository root.
+
+# HCP
+hcp_data: /path/to/hcp/ts_cortex                    # sub-<id>_ses-<s>_run-<r>_*.npy, (time, vertex)
+hcp_people: /path/to/hcp/HCP_PeopleData.csv         # subject measures (Subject column)
+hcp_measures: /path/to/hcp/behavioral_measures.csv  # list of the behavioural measures (hcp_field column)
+
+# ABIDE
+abide_data: /path/to/abide/dtseries
+abide_measures: /path/to/abide/Phenotypic_V1_0b_preprocessed1.csv
+
+# Atlases
+schaefer_atlas: /path/to/schaefer_atlas             # Schaefer2018_<n>Parcels_17Networks_order.dlabel.nii
+
+# Outputs
+results: /path/to/results                           # copies of trained checkpoints, sampled embeddings
+# mlruns: experiments/mlruns                        # MLflow tracking folder (default)
+# assets: experiments/data                          # parcellations, spectral embeddings (default)

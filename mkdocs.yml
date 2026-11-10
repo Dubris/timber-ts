@@ -1,0 +1,71 @@
+site_name: TIMBER
+site_description: Self-supervised representation learning for multichannel time series
+site_url: https://dubris.github.io/timber-ts/
+repo_url: https://github.com/Dubris/timber-ts
+repo_name: Dubris/timber-ts
+docs_dir: docs
+copyright: MIT licence, the TIMBER authors
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: false
+            show_root_heading: true
+            heading_level: 3
+            members_order: source
+            show_signature_annotations: true
+            separate_signature: true
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Modules:
+      - Tokenizer: modules/tokenizer.md
+      - Contextualizer: modules/contextualizer.md
+      - Encoder: modules/encoder.md
+      - Decoders and objectives: modules/decoder.md
+      - Finetuning heads: modules/heads.md
+      - Attention, masking and devices: modules/building_blocks.md
+  - Training:
+      - Data pipeline: training/data.md
+      - Training with Lightning: training/lightning.md
+      - Usage: training/usage.md
+      - Results: training/results.md
+  - API reference:
+      - Configuration: configuration.md
+      - Models: model.md
+  - Paper experiments: experiments.md
+  - Changelog: changelog.md
