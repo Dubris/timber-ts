@@ -1,0 +1,1596 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Self-supervised representation learning for multichannel time series">
+      
+      
+      
+        <link rel="canonical" href="https://dubris.github.io/timber-ts/experiments/">
+      
+      
+        <link rel="prev" href="../model/">
+      
+      
+        <link rel="next" href="../changelog/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Paper experiments - TIMBER</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#paper-experiments-fmri-application" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="TIMBER" class="md-header__button md-logo" aria-label="TIMBER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TIMBER
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Paper experiments
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Dubris/timber-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Dubris/timber-ts
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="TIMBER" class="md-nav__button md-logo" aria-label="TIMBER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TIMBER
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Dubris/timber-ts" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Dubris/timber-ts
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/tokenizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokenizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/contextualizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contextualizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/encoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/decoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decoders and objectives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/heads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finetuning heads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/building_blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attention, masking and devices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/lightning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training with Lightning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training/results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Paper experiments
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Paper experiments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five experiments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Input data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hcp-experiments-1-to-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HCP (experiments 1 to 4)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abide-experiment-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ABIDE (experiment 5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atlas-and-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atlas and assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#machine-paths-pathsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Machine paths: paths.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-of-experimentstimber_fmri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules of experiments/timber_fmri
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings-of-the-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings of the experiments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five experiments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Input data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hcp-experiments-1-to-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HCP (experiments 1 to 4)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abide-experiment-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ABIDE (experiment 5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atlas-and-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Atlas and assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#machine-paths-pathsyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Machine paths: paths.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-of-experimentstimber_fmri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules of experiments/timber_fmri
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings-of-the-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings of the experiments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="paper-experiments-fmri-application">Paper experiments (fMRI application)<a class="headerlink" href="#paper-experiments-fmri-application" title="Permanent link">&para;</a></h1>
+<p>This folder holds the experiments of the TIMBER paper, which apply the package to cortical resting-state fMRI from the
+Human Connectome Project (HCP) and ABIDE. The package itself is generic: everything specific to fMRI (file names,
+measures, paths, configurations) lives in <code>experiments/timber_fmri</code>, and this folder only uses it.</p>
+<h2 id="the-five-experiments">The five experiments<a class="headerlink" href="#the-five-experiments" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Task</th>
+<th>Start from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1_learning_curve</code></td>
+<td>TACO pretraining on HCP, with 50 to 500 training subjects (one config per size)</td>
+<td>scratch</td>
+</tr>
+<tr>
+<td><code>2_ablation_study</code></td>
+<td>Pretraining ablations: without TACO, causal masking, contextualizer, encoder, patch masking; one or two encoder blocks</td>
+<td>scratch</td>
+</tr>
+<tr>
+<td><code>3_finetuning_hcp_intelligence</code></td>
+<td>Regression of the HCP cognitive scores; the tokenizer, contextualizer and first encoder block are frozen</td>
+<td>pretrained (experiment 1)</td>
+</tr>
+<tr>
+<td><code>4_finetuning_hcp_gender</code></td>
+<td>Classification of gender on HCP</td>
+<td>pretrained</td>
+</tr>
+<tr>
+<td><code>5_finetuning_abide_asd</code></td>
+<td>Classification of the diagnosis (<code>DX_GROUP</code>) on ABIDE</td>
+<td>pretrained</td>
+</tr>
+</tbody>
+</table>
+<p>Each folder has the same layout:</p>
+<div class="highlight"><pre><span></span><code>&lt;n&gt;_&lt;name&gt;/
+  train.py          # training entry point (a few lines, calls experiments.timber_fmri.training.train)
+  postprocess.py    # samples the trained model over the whole dataset (embeddings, attention, predictions)
+  config/
+    config.yaml     # the configuration of the run (Hydra), overrides the generated groups below
+    model/          # architecture (experiment 1 and 2)
+    trainer/        # Lightning Trainer settings
+    datamodule/     # subject splits and sampler, one file per split or size
+    make_config.py  # generates the datamodule and trainer files from the cluster data
+</code></pre></div>
+<h2 id="input-data">Input data<a class="headerlink" href="#input-data" title="Permanent link">&para;</a></h2>
+<h3 id="hcp-experiments-1-to-4">HCP (experiments 1 to 4)<a class="headerlink" href="#hcp-experiments-1-to-4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>One file per subject and run</strong>, stored as NumPy <code>.npy</code> arrays. The file name is
+  <code>sub-&lt;subject&gt;_ses-&lt;session&gt;_run-&lt;run&gt;_*.npy</code>. The run index of the four runs of a subject is
+  <code>2 * (session - 1) + (run - 1)</code>.</li>
+<li><strong>Shape:</strong> <code>(1200, 59412)</code>, time by vertex, <code>float32</code>. 59412 is the fsLR 32k cortex without the medial wall. Files with
+  the subcortex have 91282 columns (<code>keep_subcortex: true</code>, the default of the data module); the paper experiments use
+  the cortex only.</li>
+<li><strong>Storage order:</strong> files stored channel by channel (Fortran order) are read much faster when training samples random
+  channel subsets. The converter <code>experiments/data/convert_to_channel_major.py</code> rewrites a folder in place, safely and
+  resumably: <code>uv run python -m experiments.data.convert_to_channel_major --dry-run</code>, then without <code>--dry-run</code>.</li>
+<li><strong>Measures:</strong> a CSV with a <code>Subject</code> column (the subject ids as text). Numeric measures are z-scored over the file; text
+  measures are encoded as category codes. Subjects missing one of the used measures are dropped.</li>
+<li><strong>Complete subjects:</strong> a subject enters an experiment only if all its runs are present.</li>
+</ul>
+<h3 id="abide-experiment-5">ABIDE (experiment 5)<a class="headerlink" href="#abide-experiment-5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>One file per subject and run, named <code>sub-*.npy</code> and read as <code>(time, vertex)</code>, with the phenotypic CSV of ABIDE. The
+  measure used is <code>DX_GROUP</code>.</li>
+</ul>
+<h3 id="atlas-and-assets">Atlas and assets<a class="headerlink" href="#atlas-and-assets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>experiments/data/</code> holds the assets: the spectral embedding of the cortical mesh (<code>spectral_embeddings_64.npy</code>), which
+  initialises the channel embeddings, and the random parcellations (<code>random_parcellation_*.npy</code>) used to pool the
+  samples. See <code>experiments/data/description.md</code>.</li>
+<li>The Schaefer atlas (used by the analysis to report atlas regions) is read from <code>schaefer_atlas</code> in the paths file.</li>
+</ul>
+<h2 id="machine-paths-pathsyaml">Machine paths: <code>paths.yaml</code><a class="headerlink" href="#machine-paths-pathsyaml" title="Permanent link">&para;</a></h2>
+<p>Machine-specific paths are never written in the code or in the committed configurations. They are in
+<code>experiments/paths.yaml</code>, which is git-ignored:</p>
+<ol>
+<li>copy <code>experiments/paths.example.yaml</code> to <code>experiments/paths.yaml</code>;</li>
+<li>set the keys for this machine (<code>hcp_data</code>, <code>hcp_people</code>, <code>hcp_measures</code>, <code>abide_data</code>, <code>abide_measures</code>,
+   <code>schaefer_atlas</code>, <code>results</code>). <code>mlruns</code> and <code>assets</code> default to folders of the repository;</li>
+<li>or point the environment variable <code>TIMBER_PATHS</code> to another file.</li>
+</ol>
+<p>In Python, use <code>from experiments.timber_fmri.paths import PATHS</code> and then <code>PATHS.hcp_data</code>. In the YAML configurations,
+use <code>${path:hcp_data}</code>, also inside a string (<code>${path:mlruns}/&lt;experiment&gt;/&lt;run&gt;/checkpoints/last.ckpt</code>). Relative paths
+are relative to the repository root.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>The configuration of a run is <code>config/config.yaml</code>. It lists its groups (<code>model</code>, <code>trainer</code>, <code>datamodule</code>) and then
+its own values, which override the groups. The sections are:</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name_experiment</code>, <code>name_run</code>, <code>seed</code></td>
+<td>MLflow experiment and run names, random seed</td>
+</tr>
+<tr>
+<td><code>pretrained</code></td>
+<td>a Hugging Face folder, or a Lightning checkpoint of these modules, to start from</td>
+</tr>
+<tr>
+<td><code>resume_from</code></td>
+<td>a Lightning checkpoint to resume (the MLflow run id is read from its path)</td>
+</tr>
+<tr>
+<td><code>freeze</code> / <code>discard</code></td>
+<td>parameter prefixes to freeze, and pretrained parameters not to load</td>
+</tr>
+<tr>
+<td><code>channel_embedding_init</code></td>
+<td>initial channel embeddings, when training from scratch</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>the <code>TimberConfig</code>; with <code>pretrained</code>, only the changes from the pretrained configuration</td>
+</tr>
+<tr>
+<td><code>training</code></td>
+<td>the <code>TimberTrainingConfig</code> (learning rates, epochs, ...)</td>
+</tr>
+<tr>
+<td><code>datamodule</code></td>
+<td>the subjects, the sampler and the loader (see <code>docs/data.md</code>)</td>
+</tr>
+<tr>
+<td><code>trainer</code></td>
+<td>arguments of the Lightning <code>Trainer</code></td>
+</tr>
+<tr>
+<td><code>callbacks</code></td>
+<td>checkpoints, early stopping, periodic checkpoints</td>
+</tr>
+</tbody>
+</table>
+<p>The generated files of <code>datamodule/</code> and <code>trainer/</code> are created by <code>config/make_config.py</code>, which needs the cluster data.
+They are git-ignored, so generate them on each machine.</p>
+<h2 id="training">Training<a class="headerlink" href="#training" title="Permanent link">&para;</a></h2>
+<p>From the repository root:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>experiments.1_learning_curve.train
+uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>experiments.1_learning_curve.train<span class="w"> </span>training.max_epochs<span class="o">=</span><span class="m">2</span><span class="w"> </span>datamodule.num_workers<span class="o">=</span><span class="m">4</span><span class="w">   </span><span class="c1"># overrides</span>
+</code></pre></div>
+<ul>
+<li>The run is logged to MLflow in <code>mlruns</code> (<code>${path:mlruns}</code>). List the runs with
+  <code>uv run python -m experiments.timber_fmri.tracking</code>, or open <code>mlflow ui --backend-store-uri experiments/mlruns</code>.</li>
+<li>Checkpoints are written to <code>&lt;run&gt;/checkpoints/</code>. The <code>callbacks.checkpoint</code> section chooses what is kept (for example the
+  best one by <code>val/loss</code>, and optionally the last one).</li>
+<li>The data loader can read the files with several threads per worker (<code>datamodule.read_threads</code>), which helps on slow
+  drives; <code>0</code> uses the memory map.</li>
+</ul>
+<p>Experiment 2 has seven ablation configurations, <code>config/config_1.yaml</code> to <code>config_7.yaml</code>. Each is a complete
+configuration; select one with <code>--config-name</code>:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>experiments.2_ablation_study.train<span class="w"> </span>--config-name<span class="w"> </span>config_4
+</code></pre></div>
+<h2 id="post-processing">Post-processing<a class="headerlink" href="#post-processing" title="Permanent link">&para;</a></h2>
+<p><code>postprocess.py</code> loads a checkpoint, runs it over every subject of the dataset without masking, and saves the results
+as an <code>xarray</code> dataset (a pickle):</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>experiments.1_learning_curve.postprocess<span class="w"> </span>--path_ckpt<span class="w"> </span>&lt;checkpoint.ckpt&gt;<span class="w"> </span><span class="o">[</span>--path_save<span class="w"> </span>&lt;file.pkl&gt;<span class="o">]</span>
+</code></pre></div>
+<p>The results have one entry per subject and run, and per latent or channel (optionally averaged over the regions of an
+atlas). They are read by the notebooks of the paper. <code>docs/data.md</code> describes how the batches are built. <code>analysis.py</code> documents what is sampled: the contextualised
+patches, the latents of each block with their attention, and the predictions and pooled latents of a finetuned head.</p>
+<h2 id="modules-of-experimentstimber_fmri">Modules of <code>experiments/timber_fmri</code><a class="headerlink" href="#modules-of-experimentstimber_fmri" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data.py</code></td>
+<td>The fMRI data: file names, measures, <code>FmriDataset</code> and <code>FmriDataModule</code> (subjects are mapped to entities, runs to recordings, vertices to channels).</td>
+</tr>
+<tr>
+<td><code>paths.py</code></td>
+<td><code>PATHS</code>: the machine paths of <code>paths.yaml</code>, and the <code>${path:...}</code> resolver of the YAML files.</td>
+</tr>
+<tr>
+<td><code>presets.py</code></td>
+<td><code>paper_config()</code>: the architecture and sampler of the paper; <code>spectral_embeddings_path()</code>.</td>
+</tr>
+<tr>
+<td><code>training.py</code></td>
+<td><code>train(cfg)</code>: builds the model, the data module, the logger and the callbacks, then fits. Used by every <code>train.py</code>.</td>
+</tr>
+<tr>
+<td><code>loading.py</code></td>
+<td>Loads a configuration, a model or pretrained weights from a Hugging Face folder or a Lightning checkpoint; lists the subjects of a pretraining run.</td>
+</tr>
+<tr>
+<td><code>analysis.py</code></td>
+<td><code>model_outputs</code> (one forward pass returning an <code>Activations</code> object) and <code>sample_model</code> / <code>sample_model_finetuning</code> (the post-processing).</td>
+</tr>
+<tr>
+<td><code>callbacks.py</code></td>
+<td><code>PlateauRelativeEarlyStopping</code>: stops when the relative improvement over a window of validations is small.</td>
+</tr>
+<tr>
+<td><code>configs.py</code></td>
+<td><code>deep_merge</code> and <code>deep_diff</code> for configurations, and <code>split_subjects</code> for the subject lists.</td>
+</tr>
+<tr>
+<td><code>tracking.py</code></td>
+<td>Lists the MLflow runs of a folder without a server.</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Tests of the application: file names, measures, paths, callbacks, and smoke runs of pretraining, finetuning and analysis on synthetic data.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="settings-of-the-experiments">Settings of the experiments<a class="headerlink" href="#settings-of-the-experiments" title="Permanent link">&para;</a></h2>
+<p>Experiment 1 uses the pretraining setting of the paper. The values are those of its configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Patch length, channels per chunk, window</td>
+<td>60 samples, 1024 channels, 900 samples (the 1200-sample runs are cropped by 300)</td>
+</tr>
+<tr>
+<td>Contextualizer: width, layers, heads, feed-forward ratio</td>
+<td>128, 3, 4, 2</td>
+</tr>
+<tr>
+<td>Encoder: latents, latent width, blocks, self-attention layers</td>
+<td>512, 256, 2, 4</td>
+</tr>
+<tr>
+<td>Decoder</td>
+<td>TACO (<code>forecasting_1</code>), widening factor 1</td>
+</tr>
+<tr>
+<td>Patch masking ratio</td>
+<td>0.7</td>
+</tr>
+<tr>
+<td>Learning rate, weight decay, epochs</td>
+<td>2e-4, 0.01, 30 (no gradient clipping)</td>
+</tr>
+<tr>
+<td>Batch</td>
+<td><code>chunks_per_batch</code> 2, 2, 2, 1: 8 runs (2 subjects, 2 runs, 2 channel sets)</td>
+</tr>
+</tbody>
+</table>
+<p>Experiments 3 to 5 start from the pretrained model and train a head. They freeze the tokenizer, the contextualizer, the
+first encoder block and the latent queries (<code>freeze</code>), and they use mean pooling. The exact values of each experiment are
+in its <code>config/config.yaml</code>.</p>
+<p>Points worth knowing when reading the results:</p>
+<ul>
+<li><strong>Masking.</strong> Each row of a batch hides exactly <code>floor(patch_mask_ratio * number of patches)</code> patches, which keeps the
+  tensors of a fixed shape (see <code>docs/modules/encoder.md</code>).</li>
+<li><strong>Channel embedding.</strong> The fMRI experiments start the channel embedding from a spectral embedding of the cortical mesh
+  (<code>channel_embedding_init</code>), and training refines it.</li>
+<li><strong>Vertices.</strong> The fsLR 32k cortex has 59,412 vertices without the medial wall (<code>NUM_CORTICAL_VERTICES</code>).</li>
+<li><strong>Probes and saliency.</strong> The ridge probes are in <code>experiments/postprocessing.ipynb</code>; the integrated-gradient maps are in
+  <code>experiments/exploration.ipynb</code>. The package provides the embeddings, the attention weights and the pooled latents
+  (<code>experiments/timber_fmri/analysis.py</code>) that these analyses use.</li>
+</ul>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>--no-sync<span class="w"> </span>pytest<span class="w"> </span>experiments/timber_fmri
+</code></pre></div>
+<p>The tests use synthetic data. One of them checks that every path used in the configurations and scripts is documented in
+<code>paths.example.yaml</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      MIT licence, the TIMBER authors
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
